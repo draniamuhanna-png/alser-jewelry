@@ -124,6 +124,10 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:128px;width:100%;heig
 .fav{margin:10px 0 0;width:100%;height:46px;flex:none;border-radius:24px;border:2px solid var(--gold2);background:#fff;color:#3a2f22;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;font-weight:800}
 .fav .i{font-size:28px}.fav.on .i{fill:var(--gold);stroke:var(--gold)}
 .toast{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);background:#3a2f22;color:#fff;font-weight:700;font-size:16px;padding:10px 22px;border-radius:999px;z-index:99;opacity:0;pointer-events:none;transition:.3s}.toast.on{opacity:1}
+.spin{position:absolute;left:0;right:0;top:0;bottom:128px;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:2;color:#8d7b61;font-weight:700;font-size:16px}
+.spin i{width:46px;height:46px;border-radius:50%;border:4px solid #ead7bd;border-top-color:var(--gold);animation:sp .9s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.stage.loading .spin{display:flex}
 </style>
 </head>
 <body>
@@ -199,8 +203,9 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:128px;width:100%;heig
     <div class="stage" id="stage">
       <svg class="ring" id="ring"></svg>
       <model-viewer id="mv" loading="eager" reveal="auto" camera-controls touch-action="pan-y" auto-rotate auto-rotate-delay="1200" rotation-per-second="28deg"
-        interaction-prompt="none" shadow-intensity="1.1" shadow-softness="1" exposure="1.15" environment-image="neutral"
+        interaction-prompt="none" shadow-intensity="1.2" shadow-softness="0.9" exposure="1.1" environment-image="neutral"
         camera-orbit="25deg 72deg 118%" min-camera-orbit="auto 15deg 45%" max-camera-orbit="auto 165deg 220%" field-of-view="30deg" alt=""></model-viewer>
+      <div class="spin"><i></i><span>جارٍ تحميل المجسم ثلاثي الأبعاد <b id="pg">0%</b></span></div>
       <div class="fallback"><img id="fb" alt=""></div>
       
       <div class="b360"><span>°360</span><i data-ic="rot"></i></div>
@@ -303,12 +308,13 @@ const mv=$('#mv'),stage=$('#stage');let cur,mi=0;
 /* فك ضغط Draco محلياً (يعمل بدون إنترنت) */
 customElements.whenDefined('model-viewer').then(()=>{const M=customElements.get('model-viewer');try{M.dracoDecoderLocation='assets/draco/'}catch(e){}});
 function loadModel(){
-  if(!cur.models||mi>=cur.models.length){ if(cur.models){$('#note').style.display='block';$('#note').textContent='لم يُعثر على ملف الموديل. ضعه في: '+cur.models[0]} return}
-  mv.src=cur.models[mi];
+  if(!cur.models){stage.classList.remove('loading');stage.classList.add('nomodel');return}
+  if(mi>=cur.models.length){stage.classList.remove('loading');stage.classList.add('nomodel');$('#note').style.display='block';$('#note').textContent='لم يُعثر على ملف الموديل. ضعه في: '+cur.models[0];return}
+  mv.src=(cur.resolved&&mi===0)?cur.resolved:cur.models[mi];
 }
 function openPop(p){
   cur=p;mi=0;$('#pt').textContent=p.title;$('#ps').textContent=p.sub;
-  stage.classList.add('nomodel');$('#fb').src=p.img;mv.alt=p.title;$('#note').style.display='none';mv.removeAttribute('src');
+  stage.classList.remove('nomodel','loading');stage.classList.add(p.models?'loading':'nomodel');$('#pg').textContent='0%';$('#fb').src=p.img;mv.alt=p.title;$('#note').style.display='none';mv.removeAttribute('src');
   $('#hint').style.opacity=1;
   $('#wa').href=`https://wa.me/${WA}?text=`+encodeURIComponent('مرحباً، أرغب بالاستفسار عن: '+p.title);
   $('#ov').classList.add('show');document.body.style.overflow='hidden';$('.sc').scrollTop=0;
@@ -317,8 +323,9 @@ function openPop(p){
 function closePop(){$('#ov').classList.remove('show');document.body.style.overflow='';mv.removeAttribute('src')}
 $('#close').onclick=closePop;$('#ov').onclick=e=>{if(e.target.id==='ov')closePop()};
 addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
-mv.addEventListener('load',()=>{stage.classList.remove('nomodel');$('#note').style.display='none'});
-mv.addEventListener('error',e=>{console.warn('GLB error',cur&&cur.models&&cur.models[mi],e.detail);stage.classList.add('nomodel');mi++;loadModel()});
+mv.addEventListener('load',()=>{stage.classList.remove('nomodel','loading');$('#note').style.display='none'});
+mv.addEventListener('progress',e=>{$('#pg').textContent=Math.round((e.detail.totalProgress||0)*100)+'%'});
+mv.addEventListener('error',e=>{console.warn('GLB error',cur&&cur.models&&cur.models[mi],e.detail);mi++;loadModel()});
 mv.addEventListener('camera-change',e=>{if(e.detail.source==='user-interaction')$('#hint').style.opacity=0});
 $('#reset').onclick=()=>{mv.cameraOrbit="25deg 72deg 118%";mv.fieldOfView='30deg';mv.autoRotate=true;$('#hint').style.opacity=1};
 const zoom=k=>{const o=mv.getCameraOrbit();mv.cameraOrbit=`${o.theta}rad ${o.phi}rad ${o.radius*k}m`};
@@ -347,6 +354,18 @@ new ResizeObserver(drawRing).observe(stage);
 
 /* ===== التاريخ وسعر الذهب ===== */
 $('#tm').textContent=GOLD.updated;$('#gp').textContent=GOLD.price;$('#gch').textContent=GOLD.change;
+
+/* تحميل مسبق للموديلات في الخلفية ليفتح العارض فوراً */
+async function preloadModels(){
+  for(const p of PRODUCTS){
+    if(!p.models)continue;
+    for(const u of p.models){
+      try{const r=await fetch(u,{method:'HEAD'});if(r.ok&&!(r.headers.get('content-type')||'').includes('text/html')){p.resolved=u;break}}catch(e){}
+    }
+    if(p.resolved){try{await (await fetch(p.resolved,{cache:'force-cache'})).arrayBuffer()}catch(e){}}
+  }
+}
+addEventListener('load',()=>setTimeout(preloadModels,200));
 
 /* رابط مباشر للمنتج (#id) */
 {const p=PRODUCTS.find(x=>x.id===location.hash.slice(1));if(p){curCat=p.cat;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x.dataset.c===curCat));renderRail();openPop(p)}}
