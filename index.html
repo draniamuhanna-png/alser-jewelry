@@ -200,7 +200,7 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:128px;width:100%;heig
   <button class="btn"><i data-ic="chev"></i><span data-i="det">تفاصيل الأسعار</span></button>
 </section>
 
-<footer><b>ALSERJEWELLERY</b><span>2027/ 2026</span></footer>
+<footer><b>ALSERJEWELLERY</b><span>2027/ 2026 · v5</span></footer>
 
 <!-- ===== نافذة المنتج ===== -->
 <div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="pt">
@@ -316,7 +316,9 @@ function sync(){
 }
 $('#cats').onclick=e=>{const b=e.target.closest('.cat');if(!b)return;curCat=b.dataset.c;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x===b));renderRail()};
 rail.addEventListener('scroll',()=>requestAnimationFrame(sync),{passive:true});
-rail.onclick=e=>{const c=e.target.closest('.card');if(c)openPop(PRODUCTS.find(p=>p.id===c.dataset.id))};
+rail.onclick=e=>{const c=e.target.closest('.card');if(!c)return;
+  if(!c.classList.contains('act')&&typeof railGo==='function'){railGo([...rail.querySelectorAll('.card')].indexOf(c));return}
+  openPop(PRODUCTS.find(p=>p.id===c.dataset.id))};
 renderRail();
 
 /* ===== تنقل المعرض =====
@@ -344,6 +346,7 @@ renderRail();
     if(raw>=cur+1.15)nw=Math.min(n-1,Math.floor(raw-.15));else if(raw<cur-.15)nw=Math.max(0,Math.floor(raw+.15));
     if(nw!==cur)go(nw)
   }
+  window.railGo=go;
   window.railReset=()=>{cur=0;dragged=false;touchOn=false;setAct(0)};
   function toStart(){if(cur===0&&rail.scrollLeft===0)return;window.railReset();window.__man=true;rail.scrollTo({left:0,behavior:'smooth'})}
   document.addEventListener('pointerdown',e=>{
@@ -443,7 +446,7 @@ async function preloadModels(){
 addEventListener('load',()=>setTimeout(preloadModels,200));
 
 /* رابط مباشر للمنتج (#id) */
-{const p=PRODUCTS.find(x=>x.id===location.hash.slice(1));if(p){curCat=p.cat;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x.dataset.c===curCat));renderRail();openPop(p)}}
+{const p=PRODUCTS.find(x=>x.id===location.hash.slice(1));if(p){curCat=p.cat;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x.dataset.c===curCat));renderRail();openPop(p);try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}}
 
 /* ===== EN / AR ===== */
 const EN={brand:'Tareq Alser Jewelry',cats:'Luxury Jewelry Collections',why:'Why Alser Jewelry?',w1:'High quality & precise standards',w2:'Modern, elegant design',w3:'Outstanding customer service',kr:'21K',wed:'Latest Brides',rate:'Brides’ Reviews',gi:'Gold Price Today',upd:'Last update:',det:'Price details'};
