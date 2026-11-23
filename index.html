@@ -36,9 +36,9 @@ h1{font-size:23px;font-weight:800;color:var(--gold);line-height:34px;margin-top:
 .cat span{font:600 16px Cairo;color:#6a5a46}
 .cat.on{background:#fff;border-color:var(--gold);box-shadow:0 8px 20px #bf8f2f33}
 
-.rail{touch-action:pan-y;display:flex;gap:15px;overflow-x:auto;scroll-snap-type:x mandatory;padding:70px 40px 90px;margin:-40px 0 -60px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.rail{touch-action:pan-y;display:flex;gap:15px;overflow-x:auto;scroll-snap-type:none;padding:70px 40px 90px;margin:-40px 0 -60px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .rail::-webkit-scrollbar{display:none}
-.card{flex:0 0 246px;height:288px;border:0;padding:0;border-radius:20px;overflow:hidden;scroll-snap-align:center;background:linear-gradient(180deg,#f7e6d6,#f1dcc6);transition:transform .35s,box-shadow .35s;transform-origin:center;position:relative;box-shadow:0 6px 18px rgba(150,105,40,.10)}
+.card{flex:0 0 246px;height:288px;border:0;padding:0;border-radius:20px;overflow:hidden;scroll-snap-align:center;background:linear-gradient(180deg,#f7e6d6,#f1dcc6);transition:transform .32s cubic-bezier(.22,.8,.3,1),box-shadow .32s;transform-origin:center;will-change:transform;backface-visibility:hidden;position:relative;box-shadow:0 6px 18px rgba(150,105,40,.10)}
 .card .ct{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:17px;font-weight:800;color:#8b6a35;line-height:26px;z-index:2}
 .card .c3{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);width:36px;height:22px;color:#a98a58;z-index:2}
 .card .cl{position:absolute;left:0;right:0;bottom:11px;text-align:center;font:700 11px Cairo;color:#8b7a62;direction:ltr;z-index:2}
@@ -49,16 +49,16 @@ h1{font-size:23px;font-weight:800;color:var(--gold);line-height:34px;margin-top:
 .dots i{width:12px;height:12px;border-radius:50%;background:#e8d5b4;transition:.3s}
 .dots i.on{background:var(--gold)}
 
-.why{margin:24px 30px 0;border-radius:22px;background:linear-gradient(90deg,#f6e7d8,#faefe4);padding:32px 12px 34px}
-.why h3{text-align:center;font-size:23px;font-weight:800;line-height:34px;color:#5a4326}
-.why .row{display:flex;margin-top:28px;align-items:stretch}
-.why .row div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;font-size:16px;font-weight:600;line-height:26px;text-align:center;color:#5a4a34;padding:6px 10px;margin:2px 0;border-inline-start:1px solid #e0c9a3}
+.why{margin:24px 30px 0;border-radius:22px;background:linear-gradient(90deg,#f6e7d8,#faefe4);padding:22px 12px 24px}
+.why h3{text-align:center;font-size:21px;font-weight:800;line-height:30px;color:#5a4326}
+.why .row{display:flex;margin-top:16px;align-items:stretch}
+.why .row div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;font-size:15px;font-weight:600;line-height:22px;text-align:center;color:#5a4a34;padding:4px 10px;margin:2px 0;border-inline-start:1px solid #e0c9a3}
 .why .row span{display:block;max-width:132px}
 .why .row div:first-child{border:0}
-.why .row .i{color:var(--gold);font-size:50px;stroke-width:1.4}
+.why .row .i{color:var(--gold);font-size:40px;stroke-width:1.4}
 .wedtitle{margin-top:30px}
 .wed{display:flex;gap:10px;padding:0 24px;margin-top:20px}
-.wed img{width:172px;height:234px;border-radius:18px;object-fit:cover;display:block;flex:none}
+.wed img{cursor:pointer;width:172px;height:234px;border-radius:18px;object-fit:cover;display:block;flex:none}
 
 .rev{margin:19px 42px 0;height:172px;border-radius:26px;background:#faeee3;position:relative;padding:20px 27px}
 .rev .av{position:absolute;right:41px;top:21px;width:87px;height:87px;border-radius:50%;object-fit:cover}
@@ -88,6 +88,14 @@ footer b{display:flex;align-items:center;justify-content:center;gap:12px;font:60
 footer b:before,footer b:after{content:"";width:26px;height:1px;background:#c9b99a}
 footer span{display:block;font-size:11px;color:#a89d8e;margin-top:4px}
 
+/* ===== عرض صورة العرسان ===== */
+.lb{position:fixed;inset:0;background:rgba(40,30,18,.86);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:64px 16px 22px;z-index:80}
+.lb.show{display:flex;animation:fd .2s}
+.lb img{display:block;max-width:100%;max-height:calc(100% - 68px);min-height:0;width:auto;height:auto;object-fit:contain;border-radius:18px;box-shadow:0 14px 40px #0006}
+.lb .x{right:16px;top:16px;background:#fffffff0}
+.lb .shr{flex:none;display:flex;align-items:center;justify-content:center;gap:10px;height:52px;padding:0 30px;border-radius:26px;border:0;background:#fff;color:#3a2f22;font-size:17px;font-weight:800}
+.lb .shr .i{font-size:26px}
+.lb .toast{bottom:30px}
 /* ===== النافذة المنبثقة ===== */
 .ov{position:fixed;inset:0;background:rgba(82,70,52,.66);display:none;align-items:center;justify-content:center;z-index:60}
 .ov.show{display:flex;animation:fd .2s}
@@ -232,6 +240,13 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:128px;width:100%;heig
   </div>
 </div>
 
+<div class="lb" id="lb" role="dialog" aria-modal="true">
+  <button class="x" id="lbx" aria-label="إغلاق">✕</button>
+  <img id="lbi" alt="">
+  <button class="shr" id="lbs"><i data-ic="share"></i><span>مشاركة الصورة</span></button>
+  <div class="toast" id="lbt"></div>
+</div>
+
 <script>
 /* ===== المنتجات =====
    ضع ملف الموديل 360° (GLB) في assets/models/ وغيّر اسمه هنا */
@@ -290,48 +305,62 @@ function renderRail(){
   const list=PRODUCTS.filter(p=>p.cat===curCat);
   rail.innerHTML=list.length?list.map(p=>`<button class="card" data-id="${p.id}" aria-label="${p.title}"><span class="ct">${p.title}</span><img src="${p.img}" alt="${p.title}"><span class="cl">360° ⟳</span></button>`).join(''):'<div class="empty">سيتم إضافة موديلات هذا القسم قريباً</div>';
   $('#dots').innerHTML=list.map(()=>'<i></i>').join('');
-  rail.scrollLeft=0;sync();
+  window.__man=false;rail.scrollLeft=0;if(typeof railReset==="function")railReset();sync();
 }
+function setAct(idx){rail.querySelectorAll('.card').forEach((c,i)=>c.classList.toggle('act',i===idx));document.querySelectorAll('#dots i').forEach((d,i)=>d.classList.toggle('on',i===idx))}
 function sync(){
+  if(window.__man)return;
   const cards=rail.querySelectorAll('.card');if(!cards.length)return;
   const max=rail.scrollWidth-rail.clientWidth,pr=max>0?Math.abs(rail.scrollLeft)/max:0;
-  const idx=Math.round(pr*(cards.length-1));
-  cards.forEach((c,i)=>c.classList.toggle('act',i===idx));
-  document.querySelectorAll('#dots i').forEach((d,i)=>d.classList.toggle('on',i===idx));
+  setAct(Math.round(pr*(cards.length-1)));
 }
 $('#cats').onclick=e=>{const b=e.target.closest('.cat');if(!b)return;curCat=b.dataset.c;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('on',x===b));renderRail()};
 rail.addEventListener('scroll',()=>requestAnimationFrame(sync),{passive:true});
 rail.onclick=e=>{const c=e.target.closest('.card');if(c)openPop(PRODUCTS.find(p=>p.id===c.dataset.id))};
 renderRail();
 
-/* ===== تنقل المعرض بوضع الإصبع: يبدأ ساكناً، يتبع الإصبع داخل السكشن، ويعود للبداية عند اللمس خارجه ===== */
+/* ===== تنقل المعرض: يبدأ ساكناً (الأول بارز) ← الإصبع على أي بطاقة يبرزها، وعند الاقتراب من الحافة ينزلق المعرض ببطء ← لمسة خارج السكشن تعيده للبداية ===== */
 {
-  let on=false,tgt=0,raf=0,sx=0,sy=0,dragged=false,snapT=0;
+  let on=false,raf=0,lx=0,ly=0,sx=0,sy=0,dragged=false,hot=-1,mouseIn=false;
   const isRtl=()=>getComputedStyle(document.documentElement).direction==='rtl';
-  const band=()=>{const r=rail.getBoundingClientRect(),c=rail.querySelector('.card');if(!c)return null;const k=c.getBoundingClientRect();return{l:r.left,r:r.right,w:r.width,t:k.top-14,b:k.bottom+14}};
-  const inBand=(e,B)=>B&&e.clientX>=B.l&&e.clientX<=B.r&&e.clientY>=B.t&&e.clientY<=B.b;
-  const popOpen=()=>$('#ov').classList.contains('show');
-  function loop(){const d=tgt-rail.scrollLeft;if(Math.abs(d)<.6){rail.scrollLeft=tgt;raf=0;return}rail.scrollLeft+=d*.2;raf=requestAnimationFrame(loop)}
-  function follow(e,B){
-    const max=rail.scrollWidth-rail.clientWidth;if(max<=0)return;
-    let f=isRtl()?(B.r-e.clientX)/B.w:(e.clientX-B.l)/B.w;f=Math.min(1,Math.max(0,(f-.14)/.72));
-    tgt=(isRtl()?-1:1)*f*max;rail.style.scrollSnapType='none';clearTimeout(snapT);if(!raf)raf=requestAnimationFrame(loop)
+  const popOpen=()=>$('#ov').classList.contains('show')||$('#lb').classList.contains('show');
+  const cardsEl=()=>[...rail.querySelectorAll('.card')];
+  const zf=()=>{const r=rail.getBoundingClientRect();return{r,z:(r.width/rail.offsetWidth)||1}};
+  const inBand=e=>{const{r,z}=zf();return cardsEl().length&&e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top+58*z&&e.clientY<=r.bottom-78*z};
+  const nearest=x=>{let best=-1,bd=1e9;cardsEl().forEach((c,i)=>{const k=c.getBoundingClientRect(),d=Math.abs(k.left+k.width/2-x);if(d<bd){bd=d;best=i}});return best};
+  function frame(){
+    if(!on){raf=0;return}
+    const{r}=zf(),half=r.width/2,p=Math.max(-1,Math.min(1,(lx-(r.left+half))/half)),a=Math.abs(p);
+    if(a>.42)rail.scrollLeft+=Math.sign(p)*((a-.42)/.58)*9;
+    const i=nearest(lx);if(i!==hot&&i>=0){hot=i;setAct(i)}
+    raf=requestAnimationFrame(frame)
   }
-  function release(){clearTimeout(snapT);snapT=setTimeout(()=>{on=false;rail.style.scrollSnapType=''},220)}
-  function toStart(){cancelAnimationFrame(raf);raf=0;on=false;rail.style.scrollSnapType='';if(rail.scrollLeft!==0)rail.scrollTo({left:0,behavior:'smooth'})}
+  function begin(){window.__man=true;if(!on){on=true;raf=requestAnimationFrame(frame)}}
+  function settle(){
+    on=false;cancelAnimationFrame(raf);raf=0;
+    if(!dragged||hot<0)return;
+    const cs=cardsEl(),max=rail.scrollWidth-rail.clientWidth,sgn=isRtl()?-1:1;let t;
+    if(hot===0)t=0;else if(hot===cs.length-1)t=sgn*max;
+    else{const{r,z}=zf(),k=cs[hot].getBoundingClientRect();t=rail.scrollLeft+(k.left+k.width/2-(r.left+r.width/2))/z;t=sgn>0?Math.min(max,Math.max(0,t)):Math.max(-max,Math.min(0,t))}
+    rail.scrollTo({left:t,behavior:'smooth'})
+  }
+  window.railReset=()=>{on=false;cancelAnimationFrame(raf);raf=0;hot=-1;dragged=false;setAct(0)};
+  function toStart(){window.railReset();window.__man=true;if(rail.scrollLeft!==0)rail.scrollTo({left:0,behavior:'smooth'})}
   document.addEventListener('pointerdown',e=>{
-    if(popOpen())return;const B=band();dragged=false;sx=e.clientX;sy=e.clientY;
-    if(inBand(e,B)){if(e.pointerType!=='mouse'){on=true;follow(e,B)}}
-    else if(!e.target.closest('#rail')&&!e.target.closest('.cat'))toStart()
+    if(popOpen())return;dragged=false;sx=lx=e.clientX;sy=ly=e.clientY;
+    if(e.pointerType!=='mouse'&&inBand(e)){hot=nearest(lx);if(hot>=0)setAct(hot);begin()}
   });
   document.addEventListener('pointermove',e=>{
-    if(popOpen())return;const B=band();if(!B)return;
-    const touch=e.pointerType!=='mouse';
-    if(touch){if(!on)return;if(Math.hypot(e.clientX-sx,e.clientY-sy)>8)dragged=true;follow(e,B)}
-    else{if(e.buttons&&Math.hypot(e.clientX-sx,e.clientY-sy)>8)dragged=true;if(inBand(e,B)){on=true;follow(e,B)}else if(on)release()}
+    if(popOpen())return;lx=e.clientX;ly=e.clientY;
+    if(e.pointerType==='mouse'){
+      if(e.buttons&&Math.hypot(lx-sx,ly-sy)>8)dragged=true;
+      if(inBand(e)){mouseIn=true;begin()}else if(mouseIn){mouseIn=false;settle()}
+    }else if(on&&Math.hypot(lx-sx,ly-sy)>8)dragged=true
   });
-  ['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,()=>{if(on)release()}));
+  ['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,e=>{if(e.pointerType!=='mouse'&&on)settle()}));
   rail.addEventListener('click',e=>{if(dragged){e.stopImmediatePropagation();e.preventDefault();dragged=false}},true);
+  document.addEventListener('click',e=>{if(popOpen())return;if(!inBand(e))toStart()});
+  rail.addEventListener('wheel',()=>{window.__man=false},{passive:true});
 }
 
 /* ===== النافذة ===== */
@@ -382,6 +411,24 @@ function drawRing(){
   <path d="${ah(xL,yT,.45)}" fill="#d4902e"/><path d="${ah(xR,yT,-.45)}" fill="#d4902e"/>`;
 }
 new ResizeObserver(drawRing).observe(stage);
+
+/* ===== عرض صور «أحدث أمهر العرسان» ===== */
+{
+  const lb=$('#lb'),lbi=$('#lbi');
+  const t2=m=>{const e=$('#lbt');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2200)};
+  const close=()=>{lb.classList.remove('show');if(!$('#ov').classList.contains('show'))document.body.style.overflow=''};
+  document.querySelectorAll('.wed img').forEach(im=>im.addEventListener('click',()=>{lbi.src=im.currentSrc||im.src;lb.classList.add('show');document.body.style.overflow='hidden'}));
+  $('#lbx').onclick=close;lb.addEventListener('click',e=>{if(e.target===lb)close()});
+  addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('show'))close()});
+  $('#lbs').onclick=async()=>{
+    const title='مجوهرات طارق السر',src=lbi.src;
+    try{const blob=await (await fetch(src)).blob(),f=new File([blob],'alser-jewelry.jpg',{type:blob.type||'image/jpeg'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title,text:title});return}
+    }catch(e){if(e&&e.name==='AbortError')return}
+    try{if(navigator.share){await navigator.share({title,text:title,url:location.href.split('#')[0]});return}}catch(e){if(e&&e.name==='AbortError')return}
+    const a=document.createElement('a');a.href=src;a.download='alser-jewelry.jpg';document.body.appendChild(a);a.click();a.remove();t2('تم تنزيل الصورة')
+  };
+}
 
 /* ===== التاريخ وسعر الذهب ===== */
 $('#tm').textContent=GOLD.updated;$('#gp').textContent=GOLD.price;$('#gch').textContent=GOLD.change;
