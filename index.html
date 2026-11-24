@@ -295,6 +295,11 @@ const PRODUCTS=[
 ];
 const GOLD={price:249,change:'+2.5%',updated:'10:24 ص'};   // عدّل هذه القيم يدوياً
 const WA='972595555011';
+/* رابط واتساب مع صورة المنتج: واتساب لا يسمح بإرفاق ملف عبر الرابط، فنضيف رابط الصورة المباشر ليظهر كمعاينة للصورة عند المسؤول */
+const PIMG={khatem:'p-khatem',jawhara:'p-jawhara',anaqa:'p-anaqa',sowar1:'p-b1',sowar2:'p-b2',sowar3:'p-b3'};
+const WIMG=['w3','w2','w1']; /* ترتيب الصور في الصفحة */
+const imgUrl=n=>{try{return location.protocol.startsWith('http')?new URL('assets/'+n+'.jpg',location.href).href:''}catch(e){return ''}};
+const waLink=(text,imgName)=>{const u=imgName?imgUrl(imgName):'';return `https://wa.me/${WA}?text=`+encodeURIComponent(u?text+'\n'+u:text)};
 
 /* ===== الأيقونات ===== */
 const IC={
@@ -388,7 +393,7 @@ function openPop(p){
   cur=p;mi=0;$('#pt').textContent=p.title;$('#ps').textContent=p.sub;
   stage.classList.remove('nomodel','loading');stage.classList.add(p.models?'loading':'nomodel');$('#pg').textContent='0%';$('#fb').src=p.img;mv.alt=p.title;$('#note').style.display='none';mv.removeAttribute('src');
   $('#hint').style.opacity=1;
-  $('#wa').href=`https://wa.me/${WA}?text=`+encodeURIComponent('مرحباً، أرغب بالاستفسار عن: '+p.title);
+  $('#wa').href=waLink('مرحباً، أرغب بالاستفسار عن: '+p.title,PIMG[p.id]);
   $('#ov').classList.add('show');document.body.style.overflow='hidden';$('.sc').scrollTop=0;
   loadModel();
 }
@@ -429,7 +434,7 @@ new ResizeObserver(drawRing).observe(stage);
   const lb=$('#lb'),lbi=$('#lbi');
   const t2=m=>{const e=$('#lbt');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2200)};
   const close=()=>{lb.classList.remove('show');if(!$('#ov').classList.contains('show'))document.body.style.overflow=''};
-  document.querySelectorAll('.wed img').forEach((im,i)=>im.addEventListener('click',()=>{lbi.src=im.currentSrc||im.src;$('#lbw').href=`https://wa.me/${WA}?text=`+encodeURIComponent(`مرحباً، أرغب بالاستفسار عن الموديل رقم ${i+1} من أحدث مهور العرسان`);lb.classList.add('show');document.body.style.overflow='hidden'}));
+  document.querySelectorAll('.wed img').forEach((im,i)=>im.addEventListener('click',()=>{lbi.src=im.currentSrc||im.src;$('#lbw').href=waLink(`مرحباً، أرغب بالاستفسار عن الموديل رقم ${i+1} من أحدث مهور العرسان`,WIMG[i]);lb.classList.add('show');document.body.style.overflow='hidden'}));
   $('#lbx').onclick=close;lb.addEventListener('click',e=>{if(e.target===lb)close()});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&lb.classList.contains('show'))close()});
   $('#lbs').onclick=async()=>{
