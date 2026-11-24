@@ -32,7 +32,8 @@ h1{font-size:1.4375rem;font-weight:800;color:var(--gold);line-height:2.125rem;ma
 .qb{-webkit-appearance:none;appearance:none;border:0;padding:0;outline:none;width:4rem;height:4rem;border-radius:50%;background:var(--sand);display:grid;place-items:center;color:var(--gold);font-size:2.125rem;transition:transform .34s cubic-bezier(.22,.8,.3,1),background .25s,color .25s,box-shadow .3s;will-change:transform}
 .qb:active{transform:scale(.94)}
 .qb:focus-visible{box-shadow:0 0 0 .1875rem #bf8f2f66}
-.qb.on{transform:translateY(-0.8rem) scale(1.22);color:#fff;background:#a47f48;box-shadow:0 .5rem 1.25rem #a47f4859}
+.qb.sw{transform:translateX(var(--tx,0))}
+.qb.on{transform:translate(var(--tx,0),-0.8rem) scale(1.22);color:#fff;background:#a47f48;box-shadow:0 .5rem 1.25rem #a47f4859}
 .qb.wa.on{background:#36c74b;box-shadow:0 .5rem 1.25rem #36c74b59}
 .qp{position:absolute;top:calc(100% + .625rem);left:0;z-index:31;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-.5rem) scale(.94);transform-origin:var(--ox,50%) 0;transition:opacity .22s,transform .34s cubic-bezier(.22,.8,.3,1),visibility 0s .34s}
 .qp.show{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .22s,transform .34s cubic-bezier(.22,.8,.3,1),visibility 0s}
@@ -475,12 +476,16 @@ let en=false;$('#lang').onclick=()=>{en=!en;$('#lang').textContent=en?'AR':'EN';
   const place=k=>{
     const b=q.querySelector(`.qb[data-q="${k}"]`),p=pops[k],qr=q.getBoundingClientRect(),br=b.getBoundingClientRect(),
       U=parseFloat(getComputedStyle(document.documentElement).fontSize)/16,mg=16*U,
-      cx=br.left+br.width/2-qr.left,pw=p.offsetWidth,
+      cx=qr.width/2,pw=p.offsetWidth,
       left=Math.max(mg,Math.min(cx-pw/2,qr.width-pw-mg));
     p.style.left=left+'px';p.style.setProperty('--ox',(cx-left)+'px');
   };
   const set=k=>{
     open=k;
+    /* الأيقونة المفعّلة تنتقل للوسط وتأخذ الأيقونة الوسطى مكانها */
+    const mid=btns[1],a=btns.find(b=>b.dataset.q===k),ctr=b=>b.offsetLeft+b.offsetWidth/2,dx=a&&a!==mid?ctr(mid)-ctr(a):0;
+    if(a)a.style.setProperty('--tx',dx+'px');mid.style.setProperty('--tx',-dx+'px');
+    mid.classList.toggle('sw',!!a&&a!==mid);
     btns.forEach(b=>{const on=b.dataset.q===k;b.classList.toggle('on',on);b.setAttribute('aria-expanded',on)});
     Object.keys(pops).forEach(n=>pops[n].classList.toggle('show',n===k));
     if(k)place(k);
@@ -488,7 +493,7 @@ let en=false;$('#lang').onclick=()=>{en=!en;$('#lang').textContent=en?'AR':'EN';
   btns.forEach(b=>b.addEventListener('click',()=>set(open===b.dataset.q?null:b.dataset.q)));
   document.addEventListener('pointerdown',e=>{if(open&&!e.target.closest('.qb,.qp'))set(null)});
   addEventListener('keydown',e=>{if(e.key==='Escape'&&open)set(null)});
-  addEventListener('resize',()=>{if(open)place(open)});
+  addEventListener('resize',()=>{if(open)set(open)});
   $('#lang').addEventListener('click',()=>set(null));
 }
 
