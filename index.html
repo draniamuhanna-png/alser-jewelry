@@ -137,7 +137,7 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:8rem;width:100%;heigh
 .note{position:absolute;left:0.875rem;right:0.875rem;bottom:0.75rem;text-align:center;font-size:0.75rem;font-weight:600;color:#7a6a52;background:#ffffffd0;border-radius:0.625rem;padding:0.25rem 0.5rem;display:none;z-index:6}
 .stage.nomodel .fallback{display:flex}.stage.nomodel model-viewer{visibility:hidden}.stage.nomodel .ring,.stage.nomodel .ctrl,.stage.nomodel .hint,.stage.nomodel .b360{display:none}
 .ring{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:1}
-.b360{position:absolute;left:1rem;top:1rem;height:2.5rem;padding:0 0.875rem;border-radius:0.8125rem;background:#ffffffe6;display:flex;align-items:center;gap:0.4375rem;font:800 1.0625rem Cairo;color:#4a3a28;direction:ltr;z-index:3;pointer-events:none}.b360 .i{font-size:1.1875rem;color:#8d7b61}
+.b360{position:absolute;left:1rem;top:1rem;height:2.5rem;padding:0 0.875rem;border-radius:0.8125rem;background:#ffffffe6;display:flex;align-items:center;gap:0.4375rem;font:800 1.0625rem Cairo;color:#4a3a28;direction:ltr;z-index:8;pointer-events:none;border:0;margin:0;-webkit-appearance:none;appearance:none;transition:box-shadow .25s,transform .2s}.b360 .i{font-size:1.1875rem;color:#8d7b61}
 .fs{position:absolute;right:1rem;top:1rem;width:2.625rem;height:2.5rem;border-radius:0.8125rem;background:#ffffffe6;border:0;color:#6a5a46;display:grid;place-items:center;font-size:1.375rem;padding:0;z-index:4}
 .ctrl{position:absolute;left:0;right:0;bottom:3.75rem;display:flex;justify-content:center;gap:1.375rem;z-index:4}
 .ctrl button{width:3rem;height:3rem;border-radius:50%;border:0;background:#ffffffe6;color:#3a2f22;font-size:1.5rem;display:grid;place-items:center;padding:0;box-shadow:0 0.125rem 0.5rem #0002}
@@ -157,6 +157,38 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:8rem;width:100%;heigh
 .spin i{width:2.875rem;height:2.875rem;border-radius:50%;border:0.25rem solid #ead7bd;border-top-color:var(--gold);animation:sp .9s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .stage.loading .spin{display:flex}
+
+/* ===== معرض صور وفيديوهات المنتج ===== */
+.thumbs{flex:none;display:none;gap:0.75rem;margin-top:0.875rem;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.thumbs::-webkit-scrollbar{display:none}
+.thumbs.has{display:flex}
+.th{position:relative;flex:0 0 calc((100% - 1.5rem)/3);aspect-ratio:1/1;padding:0;border:0;border-radius:1.375rem;overflow:hidden;background:#f1e1d2;cursor:pointer;outline:none;-webkit-appearance:none;appearance:none;transition:transform .2s}
+.th img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.th:active{transform:scale(.97)}
+.th::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 0 0.2188rem transparent;transition:box-shadow .25s}
+.th.on::after,.th:focus-visible::after{box-shadow:inset 0 0 0 0.2188rem var(--gold)}
+.th .pl{position:absolute;left:50%;top:50%;width:2.875rem;height:2.875rem;margin:-1.4375rem 0 0 -1.4375rem;border-radius:50%;background:rgba(40,30,20,.48);-webkit-backdrop-filter:blur(0.125rem);backdrop-filter:blur(0.125rem);display:grid;place-items:center;color:#fff;pointer-events:none}
+.th .pl svg,.bigplay svg{fill:currentColor;stroke:none;display:block}
+.th .pl svg{width:1.25rem;height:1.25rem;margin-left:0.1875rem}
+.mlayer{position:absolute;inset:0;z-index:5;display:none;background:#14100c}
+.stage.media .mlayer{display:block}
+.mlayer img,.mlayer video{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mlayer img{object-fit:cover}
+.mlayer video{display:none;object-fit:contain;background:#000}
+.mlayer.vp video{display:block}
+.mlayer.vp img{display:none}
+.bigplay{position:absolute;left:50%;top:50%;width:5.25rem;height:5.25rem;margin:-2.625rem 0 0 -2.625rem;padding:0;border:0;border-radius:50%;background:rgba(40,30,20,.5);-webkit-backdrop-filter:blur(0.25rem);backdrop-filter:blur(0.25rem);color:#fff;display:none;place-items:center;z-index:7;cursor:pointer;box-shadow:0 0.25rem 1.25rem #0004;transition:transform .2s,background .2s}
+.bigplay:active{transform:scale(.94);background:rgba(40,30,20,.65)}
+.bigplay svg{width:2.125rem;height:2.125rem;margin-left:0.3125rem}
+.mlayer.isv:not(.vp) .bigplay{display:grid}
+.mlayer.isv:not(.vp) img{cursor:pointer}
+.stage.media model-viewer{visibility:hidden}
+.stage.media .ring,.stage.media .ctrl,.stage.media .hint,.stage.media .fs,.stage.media .spin,.stage.media .note,.stage.media .fallback{display:none}
+/* في وضع الصورة/الفيديو: شارة 360 تبقى بمكانها وتصبح زراً للعودة للمجسم */
+.stage.media .b360{display:flex;pointer-events:auto;cursor:pointer;color:#7a5a1c;box-shadow:0 0 0 0.125rem var(--gold2),0 0.25rem 0.875rem #0003}
+.stage.media .b360 .i{color:var(--gold)}
+.stage.media .b360:active{transform:scale(.95)}
+@media (prefers-reduced-motion:reduce){.th,.bigplay,.b360{transition:none}}
 </style>
 </head>
 <body>
@@ -230,7 +262,7 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:8rem;width:100%;heigh
   <button class="btn"><i data-ic="chev"></i><span data-i="det">تفاصيل الأسعار</span></button>
 </section>
 
-<footer><b>ALSERJEWELLERY</b><span>2027/ 2026 · v6</span></footer>
+<footer><b>ALSERJEWELLERY</b><span>2027/ 2026 · v7</span></footer>
 
 <!-- ===== نافذة المنتج ===== -->
 <div class="ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="pt">
@@ -247,7 +279,7 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:8rem;width:100%;heigh
       <div class="spin"><i></i><span>جارٍ تحميل المجسم ثلاثي الأبعاد <b id="pg">0%</b></span></div>
       <div class="fallback"><img id="fb" alt=""></div>
       
-      <div class="b360"><span>°360</span><i data-ic="rot"></i></div>
+      <button type="button" class="b360" id="b360" aria-label="عرض المنتج بزاوية 360 درجة"><span>°360</span><i data-ic="rot"></i></button>
       <button class="fs" id="full" aria-label="ملء الشاشة"><i data-ic="full"></i></button>
       <div class="ctrl">
         <button id="reset" aria-label="إعادة"><i data-ic="refresh"></i></button>
@@ -256,7 +288,9 @@ model-viewer{position:absolute;left:0;right:0;top:0;bottom:8rem;width:100%;heigh
       </div>
       <div class="hint" id="hint"><span>اسحب لتدوير المنتج °360</span><i data-ic="rot"></i></div>
       <div class="note" id="note"></div>
+      <div class="mlayer" id="mlayer"><img id="mimg" alt=""><video id="mvid" playsinline controls controlsList="nodownload" preload="none"></video><button type="button" class="bigplay" id="bigplay" aria-label="تشغيل الفيديو"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></button></div>
     </div>
+    <div class="thumbs" id="thumbs" role="list"></div>
     <div class="chips">
       <div><i data-ic="gift"></i>مناسب للهدايا</div>
       <div><i data-ic="diamond"></i>العيار حسب القطعة</div>
@@ -295,6 +329,17 @@ const PRODUCTS=[
 ];
 const GOLD={price:249,change:'+2.5%',updated:'10:24 ص'};   // عدّل هذه القيم يدوياً
 const WA='972595555011';
+/* ===== معرض الصور والفيديوهات لكل منتج =====
+   المنتج الذي له قائمة هنا يظهر أسفل عرض الـ360° صف مربعات (صور/فيديوهات). غير المذكور يبقى كما كان.
+   type: 'image' أو 'video' | src: الصورة أو الفيديو | cover: غلاف الفيديو | thumb: المربع المصغّر (اختياري)
+   الملفات في assets/media/ */
+const MEDIA={
+  khatem:[
+    {type:'image',src:'assets/media/khatem-photo.jpg',thumb:'assets/media/khatem-photo-t.jpg',label:'صورة المنتج'},
+    {type:'video',src:'assets/media/khatem-pearl.mp4',cover:'assets/media/khatem-pearl.jpg',thumb:'assets/media/khatem-pearl-t.jpg',label:'فيديو الطقم'},
+    {type:'video',src:'assets/media/khatem-leaf.mp4',cover:'assets/media/khatem-leaf.jpg',thumb:'assets/media/khatem-leaf-t.jpg',label:'فيديو الخاتم'}
+  ]
+};
 /* رابط واتساب مع صورة المنتج: واتساب لا يسمح بإرفاق ملف عبر الرابط، فنضيف رابط الصورة المباشر ليظهر كمعاينة للصورة عند المسؤول */
 const PIMG={khatem:'p-khatem',jawhara:'p-jawhara',anaqa:'p-anaqa',sowar1:'p-b1',sowar2:'p-b2',sowar3:'p-b3'};
 const WIMG=['w3','w2','w1']; /* ترتيب الصور في الصفحة */
@@ -395,9 +440,9 @@ function openPop(p){
   $('#hint').style.opacity=1;
   $('#wa').href=waLink('مرحباً، أرغب بالاستفسار عن: '+p.title,PIMG[p.id]);
   $('#ov').classList.add('show');document.body.style.overflow='hidden';$('.sc').scrollTop=0;
-  loadModel();
+  Gal.open(p);loadModel();
 }
-function closePop(){$('#ov').classList.remove('show');document.body.style.overflow='';mv.removeAttribute('src')}
+function closePop(){Gal.close();$('#ov').classList.remove('show');document.body.style.overflow='';mv.removeAttribute('src')}
 $('#close').onclick=closePop;$('#ov').onclick=e=>{if(e.target.id==='ov')closePop()};
 addEventListener('keydown',e=>{if(e.key==='Escape')closePop()});
 mv.addEventListener('load',()=>{stage.classList.remove('nomodel','loading');$('#note').style.display='none'});
@@ -408,6 +453,47 @@ $('#reset').onclick=()=>{mv.cameraOrbit="25deg 72deg 118%";mv.fieldOfView='30deg
 const zoom=k=>{const o=mv.getCameraOrbit();mv.cameraOrbit=`${o.theta}rad ${o.phi}rad ${o.radius*k}m`};
 $('#zin').onclick=()=>zoom(.8);$('#zout').onclick=()=>zoom(1.25);
 $('#full').onclick=()=>{const f=stage.requestFullscreen||stage.webkitRequestFullscreen;f&&f.call(stage)};
+
+/* ===== معرض الصور والفيديو داخل النافذة =====
+   الافتراضي: مجسم 360°. الضغط على مربع صورة/فيديو يعرضه في منطقة العرض، وتبقى شارة 360 مكانها كزر للعودة للمجسم.
+   الفيديو يظهر بغلافه مع زر تشغيل؛ الضغط عليه يشغّل الفيديو في نفس المنطقة. */
+const Gal=(()=>{
+  const th=$('#thumbs'),ml=$('#mlayer'),mimg=$('#mimg'),vid=$('#mvid');
+  let list=[],k=-1;
+  const stopVid=()=>{try{vid.pause()}catch(e){}if(vid.getAttribute('src')){vid.removeAttribute('src');vid.load()}ml.classList.remove('vp')};
+  const mark=()=>th.querySelectorAll('.th').forEach((b,i)=>b.classList.toggle('on',i===k));
+  const home=()=>{
+    if(k<0)return;
+    k=-1;stopVid();stage.classList.remove('media');ml.className='mlayer';
+    mv.autoRotate=true;$('#hint').style.opacity=1;mark();
+  };
+  const show=i=>{
+    const m=list[i];if(!m||i===k)return;
+    stopVid();k=i;stage.classList.add('media');mv.autoRotate=false;
+    ml.className='mlayer'+(m.type==='video'?' isv':'');
+    mimg.src=m.cover||m.src;mimg.alt=m.label||'';mark();
+  };
+  const play=()=>{
+    const m=list[k];if(!m||m.type!=='video')return;
+    vid.src=m.src;ml.classList.add('vp');
+    const r=vid.play();if(r&&r.catch)r.catch(()=>{});
+  };
+  th.addEventListener('click',e=>{const b=e.target.closest('.th');if(b)show(+b.dataset.k)});
+  $('#b360').addEventListener('click',home);
+  $('#bigplay').addEventListener('click',play);
+  mimg.addEventListener('click',()=>{if(ml.classList.contains('isv')&&!ml.classList.contains('vp'))play()});
+  vid.addEventListener('ended',()=>{stopVid()});
+  return{
+    open(p){
+      stopVid();k=-1;stage.classList.remove('media');ml.className='mlayer';mv.autoRotate=true;
+      list=MEDIA[p.id]||[];
+      th.classList.toggle('has',list.length>0);
+      th.innerHTML=list.map((m,i)=>`<button type="button" class="th" role="listitem" data-k="${i}" aria-label="${m.label||''}"><img src="${m.thumb||m.src}" alt="" draggable="false">${m.type==='video'?'<span class="pl"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg></span>':''}</button>`).join('');
+      th.scrollLeft=0;
+    },
+    close(){stopVid();k=-1;stage.classList.remove('media');ml.className='mlayer'}
+  };
+})();
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2200)};
 $('#share').onclick=async()=>{
   const url=location.origin+location.pathname,data={title:cur.title,text:cur.title+' — مجوهرات طارق السر',url};
@@ -464,7 +550,7 @@ addEventListener('load',()=>setTimeout(preloadModels,200));
 
 /* الموقع يبدأ دائماً من الرئيسية: أي رابط قديم بصيغة #id لا يفتح نافذة المنتج، ويُحذف من العنوان */
 if(location.hash&&PRODUCTS.some(x=>x.id===location.hash.slice(1))){try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
-addEventListener('pageshow',e=>{if(e.persisted){$('#ov').classList.remove('show');$('#lb').classList.remove('show');document.body.style.overflow='';mv.removeAttribute('src')}});
+addEventListener('pageshow',e=>{if(e.persisted){Gal.close();$('#ov').classList.remove('show');$('#lb').classList.remove('show');document.body.style.overflow='';mv.removeAttribute('src')}});
 
 /* ===== EN / AR ===== */
 const EN={brand:'Tareq Alser Jewelry',cats:'Luxury Jewelry Collections',why:'Why Alser Jewelry?',w1:'High quality & precise standards',w2:'Modern, elegant design',w3:'Outstanding customer service',kr:'21K',wed:'Latest Brides',order:'Order now on WhatsApp',share:'Share',rate:'Brides’ Reviews',gi:'Gold Price Today',upd:'Last update:',det:'Price details',wd:'Working Days',wh:'Working Hours',d1:'Saturday',d2:'Friday'};
